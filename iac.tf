@@ -51,10 +51,34 @@ network_interface_ids           = "${azurerm_network_interface.test.network_inte
 vm_size                         = "Standard_DS1_v2"
 count                           = 2 
 }
+storage_image_reference {
+publisher                       = "MicrosoftWindowsServer"
+offer                           = "WindowsServer"
+sku                             = "2016-Datacenter"
+version                         = "latest"
+}
 
+storage_os_disk {
+name                            = "myosdisk"
+caching                         = "ReadWrite"
+create_option                   = "FromImage"
+managed_disk_type               = "Standard_LRS"
+}
 
+storage_data_disk {
+name                            = "${azurerm_managed_disk.test.name}"
+managed_disk_id                 = "${azurerm_managed_disk.test.managed_disk_id}"
+create_option                   = "Attach"
+lun                             = 1
+disk_size_gb                    = "${azurerm_managed_disk.test.disk_size_gb}"
+}
 
+os_profile {
+computer_name                   = "VM1"
+admin_username                  = "vmadmin"
+admin_password                  = "Password1"
+}
 
+os_profile_windows_config {
 
-
-
+}
